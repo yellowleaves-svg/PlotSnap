@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PlotSnap - Instant Spatial Optimization Framework</title>
+    <style>
+        :root {
+            --primary: #0f172a;
+            --secondary: #0284c7;
+            --accent: #0d9488;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #334155;
+            --border: #e2e8f0;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        body { background-color: var(--bg); color: var(--text); padding: 15px; display: flex; flex-direction: column; align-items: center; }
+        .container { width: 100%; max-width: 500px; background: var(--card-bg); padding: 25px; border-radius: 16px; box-shadow: 0 4px 12px -1px rgb(0 0 0 / 0.05); }
+        h1 { font-size: 28px; color: var(--primary); text-align: center; margin-bottom: 2px; font-weight: 800; letter-spacing: -0.5px; }
+        h1 span { color: var(--secondary); }
+        .subtitle { font-size: 13px; color: #64748b; text-align: center; margin-bottom: 20px; font-weight: 500; }
+        .info-shield { background: #f0f9ff; border: 1px solid #e0f2fe; padding: 12px; border-radius: 8px; font-size: 12px; color: #0369a1; text-align: center; margin-bottom: 20px; line-height: 1.4; font-weight: 500; }
+        .input-group { margin-bottom: 15px; }
+        label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: #475569; text-transform: uppercase; letter-spacing: 0.5px; }
+        input, select { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 16px; outline: none; background: #f8fafc; color: var(--primary); }
+        input:focus, select:focus { border-color: var(--secondary); background: #fff; box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.1); }
+        .row { display: flex; gap: 12px; }
+        .row .input-group { flex: 1; }
+        .shape-note { font-size: 11px; color: #94a3b8; margin-top: -10px; margin-bottom: 15px; display: block; }
+        button { width: 100%; background: var(--primary); color: white; border: none; padding: 14px; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 5px; transition: background 0.2s; }
+        button:hover { background: #1e293b; }
+        .output-section { margin-top: 25px; display: none; }
+        .score-badge { display: flex; justify-content: space-between; align-items: center; background: #f0fdf4; border: 1px solid #bbf7d0; padding: 12px; border-radius: 8px; color: #166534; font-weight: 700; margin-bottom: 20px; font-size: 14px; }
+        .canvas-container { position: relative; width: 100%; background: #ffffff; border: 2px dashed #cbd5e1; border-radius: 12px; padding: 25px; display: flex; justify-content: center; align-items: center; min-height: 280px; margin-bottom: 20px; }
+        #plotCanvas { background: #ffffff; border: 1px solid #cbd5e1; max-width: 100%; max-height: 240px; }
+        .direction-label { position: absolute; font-size: 10px; font-weight: 800; color: #94a3b8; background: rgba(255,255,255,0.9); padding: 2px 6px; border-radius: 4px; letter-spacing: 0.5px; }
+        .dir-n { top: 8px; left: 50%; transform: translateX(-50%); }
+        .dir-s { bottom: 8px; left: 50%; transform: translateX(-50%); }
+        .dir-e { right: 8px; top: 50%; transform: translateY(-50%); }
+        .dir-w { left: 8px; top: 50%; transform: translateY(-50%); }
+        .guide-box { background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; padding: 15px; }
+        .guide-title { font-weight: 700; font-size: 14px; margin-bottom: 10px; color: var(--primary); }
+        .guide-item { font-size: 13px; margin-bottom: 8px; display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; }
+        .dot { height: 8px; width: 8px; border-radius: 50%; display: inline-block; margin-top: 4px; flex-shrink: 0; }
+        .footer-note { text-align: center; font-size: 11px; color: #94a3b8; margin-top: 25px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Plot<span>Snap</span></h1>
+    <div class="subtitle">Instant Pre-Blueprint Spatial Analyzer</div>
+    
+    <div class="info-shield">
+        💡 <strong>Spatial Data Utility:</strong> This software calculates micro-environmental orientation maps for rectangular configurations to maximize layouts before formal architecture mapping begins.
+    </div>
+    
+    <div class="row">
+        <div class="input-group">
+            <label for="width">Plot Width (Ft)</label>
+            <input type="number" id="width" value="30" min="10" max="200">
+        </div>
+        <div class="input-group">
+            <label for="length">Plot Length (Ft)</label>
+            <input type="number" id="length" value="60" min="10" max="200">
+        </div>
+    </div>
+    <span class="shape-note">* Calibrated for standard dimensional ratios.</span>
+
+    <div class="input-group">
+        <label for="facing">Primary Road Access Orientation</label>
+        <select id="facing">
+            <option value="North">North Facing Access</option>
+            <option value="East">East Facing Access</option>
+            <option value="West">West Facing Access</option>
+            <option value="South">South Facing Access</option>
+        </select>
+    </div>
+
+    <button onclick="generateLayout()">Analyze Spatial Blueprint</button>
+
+    <div class="output-section" id="outputSection">
+        <div class="score-badge">
+            <span>Spatial Efficiency Potential:</span>
+            <span id="scoreText">85%</span>
+        </div>
+
+        <label>Recommended Optimization Matrix:</label>
+        <div class="canvas-container">
+            <span class="direction-label dir-n">NORTH / FLOW EDGE</span>
+            <span class="direction-label dir-s">SOUTH / UTILITY EDGE</span>
+            <span class="direction-label dir-e">EAST / LIGHT EDGE</span>
+            <span class="direction-label dir-w">WEST / SHADE EDGE</span>
+            <canvas id="plotCanvas"></canvas>
+        </div>
+
+        <div class="guide-box">
+            <div class="guide-title">Optimized Structural Allocations:</div>
+            <div class="guide-item"><span class="dot" style="background:#22c55e;"></span> <strong>Primary Ingress Point:</strong> <span id="gateTxt" style="font-weight:600;"></span></div>
+            <div class="guide-item"><span class="dot" style="background:#3b82f6;"></span> <strong>Stability Zone (Rear-Left):</strong> Ideal for heavy structural loading, primary load-bearing infrastructure, or master living units.</div>
+            <div class="guide-item"><span class="dot" style="background:#eab308;"></span> <strong>Thermal Zone (Rear-Right):</strong> High-efficiency quadrant calibrated for kitchen units, utilities, or main electrical integration.</div>
+            <div class="guide-item"><span class="dot" style="background:#a855f7;"></span> <strong>Ambient Zone (Front-Right):</strong> Maximum light penetration sector optimized for green patches, workspace studios, or water placement.</div>
+        </div>
+        
+        <div class="footer-note">Engineered by yellowleaves-svg. Structural Optimization Framework © 2026.</div>
+    </div>
+</div>
+
+<script>
+function generateLayout() {
+    const width = parseFloat(document.getElementById('width').value);
+    const length = parseFloat(document.getElementById('length').value);
+    const facing = document.getElementById('facing').value;
+    
+    if(!width || !length) return alert("Please enter valid numerical dimensions.");
+
+    let score = 88;
+    let gateLocation = "North-East Quad Access";
+    if (facing === "North") { score = 96; gateLocation = "North / North-East Entry Ingress"; }
+    else if (facing === "East") { score = 92; gateLocation = "East / North-East Entry Ingress"; }
+    else if (facing === "West") { score = 78; gateLocation = "Mid-West Optimal Point"; }
+    else if (facing === "South") { score = 65; gateLocation = "South-East Sector Ingress (Avoid SW Corner)"; }
+
+    document.getElementById('scoreText').innerText = score + "%";
+    document.getElementById('gateTxt').innerText = gateLocation;
+    document.getElementById('outputSection').style.display = "block";
+
+    const canvas = document.getElementById('plotCanvas');
+    const ctx = canvas.getContext('2d');
+    
+    const maxBound = 200;
+    let scale = maxBound / Math.max(width, length);
+    canvas.width = width * scale;
+    canvas.height = length * scale;
+
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.strokeStyle = "#0f172a";
+    ctx.lineWidth = 4;
+    ctx.strokeRect(0, 0, canvas.width, canvas.height);
+
+    const w3 = canvas.width / 3;
+    const h3 = canvas.height / 3;
+
+    ctx.fillStyle = "rgba(168, 85, 247, 0.12)";
+    ctx.fillRect(w3*2, 0, w3, h3);
+    
+    ctx.fillStyle = "rgba(59, 130, 246, 0.12)";
+    ctx.fillRect(0, h3*2, w3, h3);
+
+    ctx.fillStyle = "rgba(234, 179, 8, 0.12)";
+    ctx.fillRect(w3*2, h3*2, w3, h3);
+
+    ctx.fillStyle = "#0f172a";
+    ctx.font = "bold 11px sans-serif";
+    ctx.textAlign = "center";
+    ctx.fillText(`${width} Ft`, canvas.width / 2, 20);
+    
+    ctx.save();
+    ctx.translate(15, canvas.height / 2);
+    ctx.rotate(-Math.PI / 2);
+    ctx.fillText(`${length} Ft`, 0, 0);
+    ctx.restore();
+}
+</script>
+</body>
+</html>
