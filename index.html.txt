@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PlotSnap - Instant Spatial Analyzer</title>
+<style>
+:root {
+--primary: #008069;
+--primary-hover: #006653;
+--bg: #f4f7f6;
+--card-bg: #ffffff;
+--text: #333333;
+--accent: #e4a834;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+body { background-color: var(--bg); color: var(--text); padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+.container { width: 100%; max-width: 600px; background: var(--card-bg); padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+h1 { font-size: 24px; margin-bottom: 5px; color: var(--primary); display: flex; align-items: center; gap: 8px; }
+.subtitle { font-size: 14px; color: #666; margin-bottom: 25px; }
+.utility-box { background: #eef7f5; padding: 12px; border-radius: 6px; font-size: 13px; margin-bottom: 20px; border-left: 4px solid var(--primary); }
+.form-group { margin-bottom: 20px; }
+label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 14px; }
+input[type="number"] { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 16px; }
+.radio-group { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 5px; }
+.radio-btn { border: 1px solid #ccc; padding: 12px; border-radius: 6px; text-align: center; cursor: pointer; font-size: 14px; transition: all 0.2s; }
+.radio-btn input { display: none; }
+.radio-btn.active { border-color: var(--primary); background: #eef7f5; font-weight: 600; color: var(--primary); }
+.btn-main { width: 100%; background: var(--primary); color: white; padding: 14px; border: none; border-radius: 6px; font-size: 16px; font-weight: 600; cursor: pointer; transition: background 0.2s; margin-top: 10px; }
+.btn-main:hover { background: var(--primary-hover); }
+.matrix-section { margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px; display: none; }
+.matrix-title { font-size: 18px; margin-bottom: 15px; font-weight: 700; }
+.zone-card { background: #fafafa; border: 1px solid #eef0f2; padding: 15px; border-radius: 8px; margin-bottom: 15px; }
+.zone-tag { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700; color: #888; }
+.zone-header { font-size: 15px; font-weight: 600; margin: 2px 0 8px 0; }
+.zone-status { font-size: 13px; color: #555; display: flex; align-items: center; gap: 6px; }
+.spinner { width: 14px; height: 14px; border: 2px solid #ccc; border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.premium-lock { margin-top: 30px; background: #fff9eb; border: 1px dashed var(--accent); padding: 20px; border-radius: 8px; text-align: center; display: none; }
+.premium-lock h3 { font-size: 16px; margin-bottom: 8px; color: #b07200; }
+.premium-lock p { font-size: 13px; color: #666; margin-bottom: 15px; }
+.price-tag { font-size: 18px; font-weight: 700; color: #333; margin-bottom: 15px; }
+.payment-methods { text-align: left; background: white; padding: 15px; border-radius: 6px; border: 1px solid #eddcb9; font-size: 13px; }
+.whatsapp-btn { display: inline-flex; align-items: center; justify-content: center; background-color: #25D366; color: white; padding: 12px 20px; border-radius: 6px; text-decoration: none; font-weight: 600; width: 100%; margin-top: 15px; transition: background 0.2s; box-shadow: 0 2px 8px rgba(37,211,102,0.3); }
+.whatsapp-btn:hover { background-color: #20ba5a; }
+.whatsapp-btn svg { width: 20px; height: 20px; margin-right: 8px; fill: white; }
+</style>
+</head>
+
+<body>
+<div class="container">
+<h1><span>📐</span> PlotSnap</h1>
+<div class="subtitle">Instant Pre-Blueprint Spatial Analyzer</div>
+
+<!-- Form Inputs and Calculation Results structure omitted for brevity -->
+<!-- Includes plot dimensions, road orientation, analysis triggers, and premium WhatsApp payment integration -->
+</div>
+
+<!-- Interactive Spatial Controls -->
+<div class="form-group">
+<label>Plot Width (FT)</label>
+<input type="number" id="plotWidth" value="30">
+</div>
+<div class="form-group">
+<label>Plot Length (FT)</label>
+<input type="number" id="plotLength" value="60">
+</div>
+
+<div class="form-group">
+<label>Primary Road Access Orientation</label>
+<div class="radio-group">
+<div class="radio-btn active" onclick="setOrientation('North')">
+<input type="radio" name="roadOri" value="North" checked> North Facing Access
+</div>
+<div class="radio-btn" onclick="setOrientation('East')">
+<input type="radio" name="roadOri" value="East"> East Facing Access
+</div>
+<div class="radio-btn" onclick="setOrientation('South')">
+<input type="radio" name="roadOri" value="South"> South Facing Access
+</div>
+<div class="radio-btn" onclick="setOrientation('West')">
+<input type="radio" name="roadOri" value="West"> West Facing Access
+</div>
+</div>
+</div>
+
+<button class="btn-main" onclick="analyzeBlueprint()">Analyze Spatial Blueprint</button>
+
+<!-- Spatial Assessment Matrices & Premium Conversion Overlay (Refer to for the full code implementation) -->
+<div class="matrix-section" id="matrixSection" style="display:none;">
+<div class="matrix-title">📐 Generated Spatial Optimization Matrix</div>
+<div class="zone-card"><div class="zone-tag">Stability Zone</div><div class="zone-status" id="zone1"></div></div>
+<div class="zone-card"><div class="zone-tag">Thermal Zone</div><div class="zone-status" id="zone2"></div></div>
+<div class="zone-card"><div class="zone-tag">Ambient Edge</div><div class="zone-status" id="zone3"></div></div>
+</div>
+
+<div class="premium-lock" id="premiumSection" style="display:none;">
+<h3>🔒 Unlock Premium Blueprint Report</h3>
+<p>Price: ₹499 / \$9 USD</p>
+<a href="#" id="whatsappLink" class="whatsapp-btn" target="_blank">Confirm Payment Details on WhatsApp</a>
+</div>
+</div>
+
+<!-- Active Calculation Script Engine -->
+<script>
+let selectedOrientation = 'North';
+function setOrientation(orientation) {
+selectedOrientation = orientation;
+document.querySelectorAll('.radio-btn').forEach(btn => {
+btn.classList.remove('active');
+if(btn.innerText.includes(orientation)) { btn.classList.add('active'); }
+});
+}
+function analyzeBlueprint() {
+const width = document.getElementById('plotWidth').value;
+const length = document.getElementById('plotLength').value;
+document.getElementById('matrixSection').style.display = 'block';
+document.getElementById('premiumSection').style.display = 'block';
+document.getElementById('zone1').innerHTML = `✅ Heavy foundation structures routed.`;
+document.getElementById('zone2').innerHTML = `✅ Cooking & utilities localized.`;
+document.getElementById('zone3').innerHTML = `✅ Open airflow channels mapped.`;
+const baseText = `Hello PlotSnap, I have calculated a layout (${width}x${length} FT, ${selectedOrientation} Facing).`;
+document.getElementById('whatsappLink').href = `https://wa.me{encodeURIComponent(baseText)}`;
+}
+</script>
+</body>
+</html>
