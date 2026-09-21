@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PlotSnap - Instant Spatial Optimization Framework</title>
+    <title>PlotSnap - Instant Spatial Analyzer</title>
     <style>
         :root {
             --primary: #0f172a;
@@ -14,232 +14,270 @@
             --text: #334155;
             --border: #e2e8f0;
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-        body { background-color: var(--bg); color: var(--text); padding: 15px; display: flex; flex-direction: column; align-items: center; }
-        .container { width: 100%; max-width: 500px; background: var(--card-bg); padding: 25px; border-radius: 16px; box-shadow: 0 4px 12px -1px rgb(0 0 0 / 0.05); }
-        h1 { font-size: 28px; color: var(--primary); text-align: center; margin-bottom: 2px; font-weight: 800; letter-spacing: -0.5px; }
-        h1 span { color: var(--secondary); }
-        .subtitle { font-size: 13px; color: #64748b; text-align: center; margin-bottom: 20px; font-weight: 500; }
-        .info-shield { background: #f0f9ff; border: 1px solid #e0f2fe; padding: 12px; border-radius: 8px; font-size: 12px; color: #0369a1; text-align: center; margin-bottom: 20px; line-height: 1.4; font-weight: 500; }
-        .input-group { margin-bottom: 15px; }
-        label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: #475569; text-transform: uppercase; letter-spacing: 0.5px; }
-        input, select { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 16px; outline: none; background: #f8fafc; color: var(--primary); }
-        input:focus, select:focus { border-color: var(--secondary); background: #fff; box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.1); }
-        .row { display: flex; gap: 12px; }
-        .row .input-group { flex: 1; }
-        .shape-note { font-size: 11px; color: #94a3b8; margin-top: -10px; margin-bottom: 15px; display: block; }
-        button { width: 100%; background: var(--primary); color: white; border: none; padding: 14px; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 5px; transition: background 0.2s; }
-        button:hover { background: #1e293b; }
-        .output-section { margin-top: 25px; display: none; }
-        .score-badge { display: flex; justify-content: space-between; align-items: center; background: #f0fdf4; border: 1px solid #bbf7d0; padding: 12px; border-radius: 8px; color: #166534; font-weight: 700; margin-bottom: 20px; font-size: 14px; }
-        .canvas-container { position: relative; width: 100%; background: #ffffff; border: 2px dashed #cbd5e1; border-radius: 12px; padding: 25px; display: flex; justify-content: center; align-items: center; min-height: 280px; margin-bottom: 20px; }
-        #plotCanvas { background: #ffffff; border: 1px solid #cbd5e1; max-width: 100%; max-height: 240px; }
-        .direction-label { position: absolute; font-size: 10px; font-weight: 800; color: #94a3b8; background: rgba(255,255,255,0.9); padding: 2px 6px; border-radius: 4px; letter-spacing: 0.5px; }
-        .dir-n { top: 8px; left: 50%; transform: translateX(-50%); }
-        .dir-s { bottom: 8px; left: 50%; transform: translateX(-50%); }
-        .dir-e { right: 8px; top: 50%; transform: translateY(-50%); }
-        .dir-w { left: 8px; top: 50%; transform: translateY(-50%); }
-        .guide-box { background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; padding: 15px; }
-        .guide-title { font-weight: 700; font-size: 14px; margin-bottom: 10px; color: var(--primary); }
-        .guide-item { font-size: 13px; margin-bottom: 8px; display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; }
-        .dot { height: 8px; width: 8px; border-radius: 50%; display: inline-block; margin-top: 4px; flex-shrink: 0; }
-        .footer-note { text-align: center; font-size: 11px; color: #94a3b8; margin-top: 25px; }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-area {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .header-area h1 {
+            font-size: 26px;
+            color: var(--primary);
+            font-weight: 800;
+        }
+
+        .header-area h1 span {
+            color: var(--secondary);
+        }
+
+        .header-area p {
+            font-size: 14px;
+            color: #64748b;
+            margin-top: 5px;
+        }
+
+        .notice-box {
+            background-color: #f0f7ff;
+            border-left: 4px solid var(--secondary);
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-bottom: 25px;
+            color: #1e40af;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--primary);
+        }
+
+        input[type="number"], select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 14px;
+            background-color: #fff;
+            color: var(--primary);
+            transition: border-color 0.2s;
+        }
+
+        input[type="number"]:focus, select:focus {
+            outline: none;
+            border-color: var(--secondary);
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-top: 10px;
+        }
+
+        .btn-submit:hover {
+            background-color: #1e293b;
+        }
+
+        .result-section {
+            margin-top: 30px;
+            border-top: 2px dashed var(--border);
+            padding-top: 25px;
+            display: none;
+        }
+
+        .result-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .matrix-card {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .matrix-card h4 {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .matrix-card p {
+            font-size: 13px;
+            color: #64748b;
+        }
+
+        .badge-zone {
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            display: inline-block;
+            margin-bottom: 5px;
+        }
+
+        /* Print Specific Styles */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .container {
+                box-shadow: none;
+                max-width: 100%;
+                padding: 0;
+            }
+            #plotsnap-premium-panel, .form-group, .btn-submit, .notice-box {
+                display: none !important;
+            }
+            .result-section {
+                display: block !important;
+                border-top: none;
+                padding-top: 0;
+            }
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>Plot<span>Snap</span></h1>
-    <div class="subtitle">Instant Pre-Blueprint Spatial Analyzer</div>
-    
-    <div class="info-shield">
+    <div class="header-area">
+        <h1>Plot<span>Snap</span></h1>
+        <p>Instant Pre-Blueprint Spatial Analyzer</p>
+    </div>
+
+    <div class="notice-box">
         💡 <strong>Spatial Data Utility:</strong> This software calculates micro-environmental orientation maps for rectangular configurations to maximize layouts before formal architecture mapping begins.
     </div>
-    
-    <div class="row">
-        <div class="input-group">
-            <label for="width">Plot Width (Ft)</label>
-            <input type="number" id="width" value="30" min="10" max="200">
-        </div>
-        <div class="input-group">
-            <label for="length">Plot Length (Ft)</label>
-            <input type="number" id="length" value="60" min="10" max="200">
-        </div>
-    </div>
-    <span class="shape-note">* Calibrated for standard dimensional ratios.</span>
 
-    <div class="input-group">
-        <label for="facing">Primary Road Access Orientation</label>
-        <select id="facing">
-            <option value="North">North Facing Access</option>
-            <option value="East">East Facing Access</option>
-            <option value="West">West Facing Access</option>
-            <option value="South">South Facing Access</option>
-        </select>
-    </div>
-
-    <button onclick="generateLayout()">Analyze Spatial Blueprint</button>
-
-    <div class="output-section" id="outputSection">
-        <div class="score-badge">
-            <span>Spatial Efficiency Potential:</span>
-            <span id="scoreText">85%</span>
+    <form id="blueprintForm" onsubmit="event.preventDefault(); calculateSpatialBlueprint();">
+        <div class="form-row">
+            <div class="form-group">
+                <label for="plotWidth">PLOT WIDTH (FT)</label>
+                <input type="number" id="plotWidth" value="30" required min="1">
+            </div>
+            <div class="form-group">
+                <label for="plotLength">PLOT LENGTH (FT)</label>
+                <input type="number" id="plotLength" value="60" required min="1">
+            </div>
         </div>
 
-        <label>Recommended Optimization Matrix:</label>
-        <div class="canvas-container">
-            <span class="direction-label dir-n">NORTH / FLOW EDGE</span>
-            <span class="direction-label dir-s">SOUTH / UTILITY EDGE</span>
-            <span class="direction-label dir-e">EAST / LIGHT EDGE</span>
-            <span class="direction-label dir-w">WEST / SHADE EDGE</span>
-            <canvas id="plotCanvas"></canvas>
+        <div class="form-group">
+            <label for="roadOrientation">PRIMARY ROAD ACCESS ORIENTATION</label>
+            <select id="roadOrientation">
+                <option value="North">North Facing Access</option>
+                <option value="East">East Facing Access</option>
+                <option value="South">South Facing Access</option>
+                <option value="West">West Facing Access</option>
+            </select>
         </div>
 
-        <div class="guide-box">
-            <div class="guide-title">Optimized Structural Allocations:</div>
-            <div class="guide-item"><span class="dot" style="background:#22c55e;"></span> <strong>Primary Ingress Point:</strong> <span id="gateTxt" style="font-weight:600;"></span></div>
-            <div class="guide-item"><span class="dot" style="background:#3b82f6;"></span> <strong>Stability Zone (Rear-Left):</strong> Ideal for heavy structural loading, primary load-bearing infrastructure, or master living units.</div>
-            <div class="guide-item"><span class="dot" style="background:#eab308;"></span> <strong>Thermal Zone (Rear-Right):</strong> High-efficiency quadrant calibrated for kitchen units, utilities, or main electrical integration.</div>
-            <div class="guide-item"><span class="dot" style="background:#a855f7;"></span> <strong>Ambient Zone (Front-Right):</strong> Maximum light penetration sector optimized for green patches, workspace studios, or water placement.</div>
-        </div>
+        <button type="submit" class="btn-submit">Analyze Spatial Blueprint</button>
+    </form>
+
+    <!-- Interactive Output Display Containers -->
+    <div id="resultArea" class="result-section">
+        <h3 class="result-title">📐 Generated Spatial Optimization Matrix</h3>
         
-        <div class="footer-note">Engineered by yellowleaves-svg. Structural Optimization Framework © 2026.</div>
+        <div class="matrix-card" style="border-left: 4px solid #ef4444;">
+            <div>
+                <span class="badge-zone" style="background: #fee2e2; color: #ef4444;">Stability Zone</span>
+                <h4 id="stabilityTitle">Load-Bearing Structural Placement</h4>
+                <p id="stabilityDesc">Calculating heavy frame boundaries...</p>
+            </div>
+        </div>
+
+        <div class="matrix-card" style="border-left: 4px solid #f97316;">
+            <div>
+                <span class="badge-zone" style="background: #ffedd5; color: #f97316;">Thermal Zone</span>
+                <h4 id="thermalTitle">Utility & Kitchen Vector Allocation</h4>
+                <p id="thermalDesc">Calculating heat-retention layouts...</p>
+            </div>
+        </div>
+
+        <div class="matrix-card" style="border-left: 4px solid #06b6d4;">
+            <div>
+                <span class="badge-zone" style="background: #ecfeff; color: #06b6d4;">Ambient Edge</span>
+                <h4 id="ambientTitle">Natural Light & Ventilation Openings</h4>
+                <p id="ambientDesc">Mapping daylight entry configurations...</p>
+            </div>
+        </div>
     </div>
-</div>
 
-<script>
-function generateLayout() {
-    const width = parseFloat(document.getElementById('width').value);
-    const length = parseFloat(document.getElementById('length').value);
-    const facing = document.getElementById('facing').value;
-    
-    if(!width || !length) return alert("Please enter valid numerical dimensions.");
-
-    let score = 88;
-    let gateLocation = "North-East Quad Access";
-    if (facing === "North") { score = 96; gateLocation = "North / North-East Entry Ingress"; }
-    else if (facing === "East") { score = 92; gateLocation = "East / North-East Entry Ingress"; }
-    else if (facing === "West") { score = 78; gateLocation = "Mid-West Optimal Point"; }
-    else if (facing === "South") { score = 65; gateLocation = "South-East Sector Ingress (Avoid SW Corner)"; }
-
-    document.getElementById('scoreText').innerText = score + "%";
-    document.getElementById('gateTxt').innerText = gateLocation;
-    document.getElementById('outputSection').style.display = "block";
-
-    const canvas = document.getElementById('plotCanvas');
-    const ctx = canvas.getContext('2d');
-    
-    const maxBound = 200;
-    let scale = maxBound / Math.max(width, length);
-    canvas.width = width * scale;
-    canvas.height = length * scale;
-
-    ctx.fillStyle = "#ffffff";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.strokeStyle = "#0f172a";
-    ctx.lineWidth = 4;
-    ctx.strokeRect(0, 0, canvas.width, canvas.height);
-
-    const w3 = canvas.width / 3;
-    const h3 = canvas.height / 3;
-
-    ctx.fillStyle = "rgba(168, 85, 247, 0.12)";
-    ctx.fillRect(w3*2, 0, w3, h3);
-    
-    ctx.fillStyle = "rgba(59, 130, 246, 0.12)";
-    ctx.fillRect(0, h3*2, w3, h3);
-
-    ctx.fillStyle = "rgba(234, 179, 8, 0.12)";
-    ctx.fillRect(w3*2, h3*2, w3, h3);
-
-    ctx.fillStyle = "#0f172a";
-    ctx.font = "bold 11px sans-serif";
-    ctx.textAlign = "center";
-    ctx.fillText(`${width} Ft`, canvas.width / 2, 20);
-    
-    ctx.save();
-    ctx.translate(15, canvas.height / 2);
-    ctx.rotate(-Math.PI / 2);
-    ctx.fillText(`${length} Ft`, 0, 0);
-    ctx.restore();
-}
-</script>
     <!-- START OF PLOTSNAP PREMIUM AUTOMATED PAYMENT & PRINT ENGINE -->
-<div id="plotsnap-premium-panel" style="max-width: 550px; margin: 40px auto; padding: 25px; border: 2px dashed #007bff; background: #ffffff; border-radius: 12px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: center;">
-    
-    <h3 style="color: #111; margin-bottom: 8px; font-size: 22px; font-weight: 700;">🔒 Unlock Premium Blueprint Report</h3>
-    <p style="color: #555; font-size: 14px; margin-bottom: 20px; line-height: 1.5;">Get your instant print-ready summary report containing exact zone boundary coordinates and optimal structural layout metrics.</p>
-    
-    <div style="font-size: 18px; font-weight: bold; color: #28a745; margin-bottom: 20px; background: #eef9f1; display: inline-block; padding: 6px 15px; border-radius: 20px;">
-        Price: ₹499 / $9 USD
-    </div>
-
-    <!-- Dual Payment Option Grid -->
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; text-align: left; border-top: 1px solid #eee; padding-top: 20px;">
+    <div id="plotsnap-premium-panel" style="margin-top: 40px; padding: 25px; border: 2px dashed #007bff; background: #ffffff; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: center;">
         
-        <!-- National Options Column (India UPI) -->
-        <div style="border-right: 1px solid #eee; padding-right: 15px; text-align: center;">
-            <h4 style="margin: 0 0 12px 0; color: #007bff; font-size: 15px; font-weight: 600;">🇮🇳 Within India (UPI)</h4>
-            <img src="qr-code.png.jpg" alt="Google Pay QR Code" style="width: 135px; height: 135px; display: block; margin: 0 auto 12px auto; border: 1px solid #ddd; padding: 4px; border-radius: 6px;">
-            <p style="font-size: 12px; margin: 5px 0; color: #222; word-break: break-all;"><strong>GPay UPI ID:</strong><br><span style="color: #007bff;">yellowleavesin-1@okicici</span></p>
-        </div>
+        <h3 style="color: #111; margin-bottom: 8px; font-size: 22px; font-weight: 700;">🔒 Unlock Premium Blueprint Report</h3>
+        <p style="color: #555; font-size: 14px; margin-bottom: 20px; line-height: 1.5;">Get your instant print-ready summary report containing exact zone boundary coordinates and optimal structural layout metrics.</p>
         
-        <!-- International Options Column (Global Payments) -->
-        <div style="padding-left: 5px; font-size: 11px; color: #333; line-height: 1.5;">
-            <h4 style="margin: 0 0 12px 0; color: #007bff; font-size: 15px; font-weight: 600; text-align: center;">🌐 Bank / International</h4>
-            <p style="margin: 3px 0;"><strong>Name:</strong> Monika Sharma</p>
-            <p style="margin: 3px 0;"><strong>Bank:</strong> Canara Bank</p>
-            <p style="margin: 3px 0;"><strong>Branch:</strong> Kath Mandi, Rohtak</p>
-            <p style="margin: 3px 0;"><strong>A/c:</strong> 110168182102</p>
-            <p style="margin: 3px 0;"><strong>IFSC:</strong> CNRB0006621</p>
-            <p style="margin: 3px 0;"><strong>SWIFT:</strong> CNRBINBBBFD</p>
-            <p style="margin: 3px 0;"><strong>MICR:</strong> 124015009</p>
+        <div style="font-size: 18px; font-weight: bold; color: #28a745; margin-bottom: 20px; background: #eef9f1; display: inline-block; padding: 6px 15px; border-radius: 20px;">
+            Price: ₹499 / $9 USD
         </div>
 
-    </div>
-
-    <!-- Fully Automated WhatsApp Redirection Button -->
-    <a href="https://wa.me." 
-       target="_blank" 
-       style="display: block; width: calc(100% - 24px); text-align: center; padding: 12px; background: #25D366; color: white; font-weight: bold; text-decoration: none; border-radius: 6px; font-size: 15px; margin: 15px auto 0 auto; box-shadow: 0 2px 5px rgba(0,0,0,0.1); border: none;">
-       🟢 Send Payment Screenshot via WhatsApp
-    </a>
-
-    <!-- Client-Side Access Verification Key Box -->
-    <div style="margin-top: 25px; padding: 15px; border-radius: 8px; background: #f8f9fa; border: 1px solid #ddd; text-align: left;">
-        <label style="display: block; font-size: 13px; font-weight: 600; color: #333; margin-bottom: 6px;">🔑 Enter Unlock Key Sent via WhatsApp Automation:</label>
-        <div style="display: flex; gap: 10px;">
-            <input type="text" id="premium-secret-key" placeholder="Enter key (e.g. SNAP99)" style="flex: 1; padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; background: #fff; color: #000;">
-            <button type="button" onclick="checkPremiumKey()" style="padding: 8px 15px; background: #28a745; color: white; border: none; font-weight: bold; border-radius: 4px; cursor: pointer; font-size: 14px;">Unlock PDF</button>
-        </div>
-        <p id="unlock-message" style="font-size: 12px; margin: 5px 0 0 0; font-weight: 600; display: none;"></p>
-        
-        <!-- Hidden print button that activates dynamically when key matches -->
-        <button type="button" id="print-pdf-btn" onclick="window.print()" style="display: none; width: 100%; margin-top: 12px; padding: 12px; background: #007bff; color: white; font-weight: bold; border: none; border-radius: 4px; cursor: pointer; font-size: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
-            🖨️ Download / Print Premium PDF Report
-        </button>
-    </div>
-</div>
-
-<script>
-function checkPremiumKey() {
-    const key = document.getElementById('premium-secret-key').value.trim();
-    const msg = document.getElementById('unlock-message');
-    const printBtn = document.getElementById('print-pdf-btn');
-    
-    if (key === 'SNAP99') { 
-        msg.style.color = '#155724';
-        msg.innerText = '✅ Access Granted! Use the button below to save/print your report.';
-        msg.style.display = 'block';
-        printBtn.style.display = 'block';
-    } else {
-        msg.style.color = '#721c24';
-        msg.innerText = '❌ Invalid key. Please double-check your values and send your screenshot via WhatsApp to get the correct key.';
-        msg.style.display = 'block';
-        printBtn.style.display = 'none';
-    }
-}
-</script>
-<!-- END OF PLOTSNAP PREMIUM AUTOMATED PAYMENT & PRINT ENGINE -->
-</body>
-</html>
+        <!-- Dual Payment Option Grid -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; text-align: left; border-top: 1px solid #eee; padding-top: 20px;">
+            
+            <!-- National Options Column (India UPI) -->
+            <div style="border-right: 1px solid #eee; padding-right: 15px; text-align: center;">
+                <h4 style="margin: 0 0 12px 0; color: #007bff; font-size: 15px; font-weight: 600;">🇮🇳 Within India (UPI)</h4>
+                <img src="qr-code.png.jpg" alt="Google Pay QR Code" style="width: 135px; height: 135px; display: block; margin: 0 auto 12px auto; border: 1px solid #ddd; padding: 4px; border-radius: 6px;">
+                <p style="font-size: 12px; margin: 5px 0; color: #222; word-break: break-all;"><strong>International UPI ID:</strong><br><span style="color: #007bff;">yellowleavesin-1@okicici</span></p>
+            </div>
+            
+            <!-- National & International Bank Transfers -->
+            <div style="padding-left: 5px; font-size: 11px; color: #333; line-height: 1.5;">
+                <h4 style="margin: 0 0 12px 0; color: #007bff; font-size: 15px; font-weight: 600; text-align: center;">🌐 National / International Bank</h4>
+                <p style="margin: 3px 0;"><strong>Name:</strong> Monika Sharma</p>
