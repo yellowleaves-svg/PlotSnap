@@ -6,216 +6,68 @@
     <title>PlotSnap - Instant Spatial Analyzer</title>
     <style>
         :root {
-            --primary: #0f172a;
-            --secondary: #0284c7;
-            --accent: #0d9488;
-            --bg: #f8fafc;
+            --primary: #0b2240;
+            --primary-hover: #17345c;
+            --bg: #f4f7f6;
             --card-bg: #ffffff;
-            --text: #334155;
-            --border: #e2e8f0;
+            --text: #333333;
+            --accent: #e4a834;
         }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            line-height: 1.6;
-            padding: 20px;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 600px;
-            margin: 0 auto;
-            background: var(--card-bg);
-            padding: 25px;
-            border-radius: 16px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
-        }
-
-        .header-area {
-            text-align: center;
-            margin-bottom: 25px;
-        }
-
-        .header-area h1 {
-            font-size: 26px;
-            color: var(--primary);
-            font-weight: 800;
-        }
-
-        .header-area h1 span {
-            color: var(--secondary);
-        }
-
-        .header-area p {
-            font-size: 14px;
-            color: #64748b;
-            margin-top: 5px;
-        }
-
-        .notice-box {
-            background-color: #f0f7ff;
-            border-left: 4px solid var(--secondary);
-            padding: 12px;
-            border-radius: 8px;
-            font-size: 13px;
-            margin-bottom: 25px;
-            color: #1e40af;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-
-        label {
-            display: block;
-            font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 6px;
-            color: var(--primary);
-        }
-
-        input[type="number"], select {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            font-size: 14px;
-            background-color: #fff;
-            color: var(--primary);
-            transition: border-color 0.2s;
-        }
-
-        input[type="number"]:focus, select:focus {
-            outline: none;
-            border-color: var(--secondary);
-        }
-
-        .btn-submit {
-            width: 100%;
-            padding: 14px;
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 15px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            margin-top: 10px;
-        }
-
-        .btn-submit:hover {
-            background-color: #1e293b;
-        }
-
-        .result-section {
-            margin-top: 30px;
-            border-top: 2px dashed var(--border);
-            padding-top: 25px;
-            display: none;
-        }
-
-        .result-title {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 15px;
-            text-align: center;
-        }
-
-        .matrix-card {
-            background: #fff;
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-        }
-
-        .matrix-card h4 {
-            font-size: 14px;
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-
-        .matrix-card p {
-            font-size: 13px;
-            color: #64748b;
-        }
-
-        .badge-zone {
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            display: inline-block;
-            margin-bottom: 5px;
-        }
-
-        @media print {
-            body {
-                background: white;
-                padding: 0;
-            }
-            .container {
-                box-shadow: none;
-                max-width: 100%;
-                padding: 0;
-            }
-            #plotsnap-premium-panel, .form-group, .btn-submit, .notice-box {
-                display: none !important;
-            }
-            .result-section {
-                display: block !important;
-                border-top: none;
-                padding-top: 0;
-            }
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        body { background-color: var(--bg); color: var(--text); padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .container { width: 100%; max-width: 500px; background: var(--card-bg); padding: 30px; border-radius: 16px; box-shadow: 0 4px 30px rgba(0,0,0,0.05); border: 1px solid #eef2f5; }
+        h1 { font-size: 26px; text-align: center; color: #0550c6; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 4px; }
+        .subtitle { font-size: 13px; text-align: center; color: #777; margin-bottom: 25px; }
+        .utility-box { background: #f0f6ff; padding: 15px; border-radius: 10px; font-size: 13px; margin-bottom: 25px; line-height: 1.5; border-left: 4px solid #0550c6; color: #2c3e50; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; font-weight: 700; margin-bottom: 8px; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; color: #555; }
+        input[type="number"], select { width: 100%; padding: 12px 16px; border: 1px solid #dce2e6; border-radius: 8px; font-size: 15px; background: #fafbfc; transition: all 0.2s; outline: none; }
+        input[type="number"]:focus, select:focus { border-color: #0550c6; background: #fff; box-shadow: 0 0 0 3px rgba(5,80,198,0.1); }
+        .btn-main { width: 100%; background: var(--primary); color: white; padding: 14px; border: none; border-radius: 8px; font-size: 15px; font-weight: 700; cursor: pointer; transition: background 0.2s; margin-top: 5px; }
+        .btn-main:hover { background: var(--primary-hover); }
+        .matrix-section { margin-top: 30px; border-top: 2px dashed #eef2f5; padding-top: 25px; }
+        .matrix-title { font-size: 16px; margin-bottom: 15px; font-weight: 800; color: #0b2240; display: flex; align-items: center; gap: 6px; }
+        .zone-card { background: #fff; border: 1px solid #eef2f5; padding: 16px; border-radius: 10px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.02); }
+        .zone-tag { font-size: 10px; text-transform: uppercase; letter-spacing: 0.8px; font-weight: 800; color: #95a5a6; margin-bottom: 4px; }
+        .zone-header { font-size: 14px; font-weight: 700; color: #2c3e50; margin-bottom: 4px; }
+        .zone-status { font-size: 13px; color: #7f8c8d; line-height: 1.4; }
+        .premium-lock { margin-top: 30px; background: #fffbf2; border: 1px dashed var(--accent); padding: 25px; border-radius: 12px; text-align: center; }
+        .premium-lock h3 { font-size: 18px; margin-bottom: 6px; color: #b07200; font-weight: 800; }
+        .premium-lock p { font-size: 13px; color: #666; margin-bottom: 20px; line-height: 1.4; }
+        .price-badge { display: inline-block; background: #fff3d6; color: #b07200; font-weight: 800; padding: 6px 16px; border-radius: 20px; font-size: 15px; margin-bottom: 20px; border: 1px solid #ffe6af; }
+        .payment-box { text-align: left; background: white; padding: 20px; border-radius: 10px; border: 1px solid #eddcb9; font-size: 13px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(228,168,52,0.05); }
+        .payment-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 12px; }
+        .payment-col h4 { font-size: 11px; text-transform: uppercase; color: #888; margin-bottom: 6px; letter-spacing: 0.5px; }
+        .payment-col p { font-size: 12px; color: #333; margin-bottom: 3px; font-family: monospace; }
+        .qr-placeholder { width: 90px; height: 90px; background: #eee; margin-top: 5px; border-radius: 6px; border: 1px solid #ddd; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #777; }
+        .whatsapp-btn { display: inline-flex; align-items: center; justify-content: center; background-color: #25D366; color: white; padding: 14px 20px; border-radius: 8px; text-decoration: none; font-weight: 700; width: 100%; transition: background 0.2s; box-shadow: 0 4px 12px rgba(37,211,102,0.2); border: none; font-size: 14px; cursor: pointer; }
+        .whatsapp-btn:hover { background-color: #20ba5a; }
+        .whatsapp-btn svg { width: 18px; height: 18px; margin-right: 8px; fill: white; }
     </style>
 </head>
 <body>
-
-<div class="container">
-    <div class="header-area">
-        <h1>Plot<span>Snap</span></h1>
-        <p>Instant Pre-Blueprint Spatial Analyzer</p>
-    </div>
-
-    <div class="notice-box">
-        💡 <strong>Spatial Data Utility:</strong> This software calculates micro-environmental orientation maps for rectangular configurations to maximize layouts before formal architecture mapping begins.
-    </div>
-
-    <form id="blueprintForm" onsubmit="event.preventDefault(); calculateSpatialBlueprint();">
-        <div class="form-row">
-            <div class="form-group">
-                <label for="plotWidth">PLOT WIDTH (FT)</label>
-                <input type="number" id="plotWidth" value="30" required min="1">
-            </div>
-            <div class="form-group">
-                <label for="plotLength">PLOT LENGTH (FT)</label>
-                <input type="number" id="plotLength" value="60" required min="1">
-            </div>
+    <div class="container">
+        <h1>PlotSnap</h1>
+        <div class="subtitle">Instant Pre-Blueprint Spatial Analyzer</div>
+        
+        <div class="utility-box">
+            💡 <strong>Spatial Data Utility:</strong> This software calculates micro-environmental orientation maps for rectangular configurations to maximize layouts before formal architecture mapping begins.
         </div>
 
+        <div class="form-row">
+            <div class="form-group">
+                <label>Plot Width (FT)</label>
+                <input type="number" id="plotWidth" value="30">
+            </div>
+            <div class="form-group">
+                <label>Plot Length (FT)</label>
+                <input type="number" id="plotLength" value="60">
+            </div>
+        </div>
+        
         <div class="form-group">
-            <label for="roadOrientation">PRIMARY ROAD ACCESS ORIENTATION</label>
+            <label>Primary Road Access Orientation</label>
             <select id="roadOrientation">
                 <option value="North">North Facing Access</option>
                 <option value="East">East Facing Access</option>
@@ -224,57 +76,79 @@
             </select>
         </div>
 
-        <button type="submit" class="btn-submit">Analyze Spatial Blueprint</button>
-    </form>
+        <button class="btn-main" onclick="analyzeBlueprint()">Analyze Spatial Blueprint</button>
 
-    <div id="resultArea" class="result-section">
-        <h3 class="result-title">📐 Generated Spatial Optimization Matrix</h3>
-        
-        <div class="matrix-card" style="border-left: 4px solid #ef4444;">
-            <div>
-                <span class="badge-zone" style="background: #fee2e2; color: #ef4444;">Stability Zone</span>
-                <h4 id="stabilityTitle">Load-Bearing Structural Placement</h4>
-                <p id="stabilityDesc">Calculating heavy frame boundaries...</p>
+        <div id="outputContainer" style="display: none;">
+            <div class="matrix-section">
+                <div class="matrix-title">📐 Generated Spatial Optimization Matrix</div>
+                
+                <div class="zone-card">
+                    <div class="zone-tag">Stability Zone</div>
+                    <div class="zone-header">Load-Bearing Structural Placement</div>
+                    <div class="zone-status" id="zone1">Calculating frame boundaries...</div>
+                </div>
+                
+                <div class="zone-card">
+                    <div class="zone-tag">Thermal Zone</div>
+                    <div class="zone-header">Utility & Kitchen Vector Allocation</div>
+                    <div class="zone-status" id="zone2">Calculating heat-retention layouts...</div>
+                </div>
+                
+                <div class="zone-card">
+                    <div class="zone-tag">Ambient Edge</div>
+                    <div class="zone-header">Natural Light & Ventilation Openings</div>
+                    <div class="zone-status" id="zone3">Mapping daylight entry configurations...</div>
+                </div>
             </div>
-        </div>
 
-        <div class="matrix-card" style="border-left: 4px solid #f97316;">
-            <div>
-                <span class="badge-zone" style="background: #ffedd5; color: #f97316;">Thermal Zone</span>
-                <h4 id="thermalTitle">Utility & Kitchen Vector Allocation</h4>
-                <p id="thermalDesc">Calculating heat-retention layouts...</p>
-            </div>
-        </div>
-
-        <div class="matrix-card" style="border-left: 4px solid #06b6d4;">
-            <div>
-                <span class="badge-zone" style="background: #ecfeff; color: #06b6d4;">Ambient Edge</span>
-                <h4 id="ambientTitle">Natural Light & Ventilation Openings</h4>
-                <p id="ambientDesc">Mapping daylight entry configurations...</p>
+            <div class="premium-lock">
+                <h3>🔒 Unlock Premium Blueprint Report</h3>
+                <p>Get your instant print-ready summary report containing exact zone boundary coordinates and optimal structural layout metrics.</p>
+                
+                <div class="price-badge">Price: ₹499 / $9 USD</div>
+                
+                <div class="payment-box">
+                    <div class="payment-grid">
+                        <div class="payment-col">
+                            <h4>🇮🇳 Within India (UPI)</h4>
+                            <p style="font-weight:bold; font-family:sans-serif;">International UPI ID:</p>
+                            <p style="color:#0550c6; margin-bottom:10px;">yellowleavesin-1@okicici</p>
+                            <div class="qr-placeholder">G-Pay QR</div>
+                        </div>
+                        <div class="payment-col">
+                            <h4>🌐 National / Bank</h4>
+                            <p><strong>Name:</strong> Monika Sharma</p>
+                            <p><strong>Bank:</strong> Canara Bank</p>
+                            <p><strong>Branch:</strong> Rohtak</p>
+                            <p><strong>A/c:</strong> 110168182102</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <a href="#" id="whatsappLink" class="whatsapp-btn" target="_blank">
+                    <svg viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397 0 11.973 0c3.186.001 6.182 1.24 8.434 3.496 2.252 2.256 3.489 5.256 3.487 8.442-.005 6.624-5.343 11.97-11.916 11.97-1.995-.001-3.956-.5-5.698-1.448L0 24zm6.59-4.859c1.62.963 3.398 1.47 5.21 1.471 5.432 0 9.853-4.397 9.857-9.805.002-2.618-1.011-5.08-2.854-6.927C17.017 1.933 14.56 9.2 11.97 9.2c-5.436 0-9.858 4.398-9.863 9.808-.001 1.872.502 3.701 1.457 5.304l-.994 3.627 3.722-.981zm12.35-6.223c-.328-.165-1.944-.961-2.243-1.071-.3-.11-.518-.165-.736.165-.219.329-.848 1.071-1.04 1.29-.191.219-.383.247-.712.082-.328-.165-1.386-.511-2.641-1.633-.976-.872-1.635-1.95-1.826-2.28-.192-.33-.021-.508.143-.672.148-.147.329-.384.493-.576.164-.192.219-.329.328-.549.11-.22.055-.412-.028-.576-.082-.165-.736-1.775-1.009-2.43-.267-.639-.539-.553-.736-.563-.191-.01-.41-.011-.629-.011-.219 0-.575.082-.876.411-.3.329-1.148 1.125-1.148 2.742 0 1.617 1.176 3.181 1.34 3.401.164.22 2.313 3.532 5.602 4.954.783.339 1.395.541 1.872.693.787.25 1.503.215 2.069.13.632-.094 1.944-.795 2.217-1.563.273-.768.273-1.426.191-1.563-.081-.137-.299-.22-.628-.385z"/></svg>
+                    Confirm Payment Details on WhatsApp
+                </a>
             </div>
         </div>
     </div>
 
-    <!-- PREMIUM PANEL CONTAINER -->
-    <div id="plotsnap-premium-panel" style="margin-top: 40px; padding: 25px; border: 2px dashed #007bff; background: #ffffff; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: center;">
-        
-        <h3 style="color: #111; margin-bottom: 8px; font-size: 22px; font-weight: 700;">🔒 Unlock Premium Blueprint Report</h3>
-        <p style="color: #555; font-size: 14px; margin-bottom: 20px; line-height: 1.5;">Get your instant print-ready summary report containing exact zone boundary coordinates and optimal structural layout metrics.</p>
-        
-        <div style="font-size: 18px; font-weight: bold; color: #28a745; margin-bottom: 20px; background: #eef9f1; display: inline-block; padding: 6px 15px; border-radius: 20px;">
-            Price: ₹499 / $9 USD
-        </div>
-
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; text-align: left; border-top: 1px solid #eee; padding-top: 20px; margin-bottom: 20px;">
-            <div style="border-right: 1px solid #eee; padding-right: 15px; text-align: center;">
-                <h4 style="margin: 0 0 12px 0; color: #007bff; font-size: 15px; font-weight: 600;">🇮🇳 Within India (UPI)</h4>
-                <img src="qr-code.png.jpg" alt="Google Pay QR Code" style="width: 135px; height: 135px; display: block; margin: 0 auto 12px auto; border: 1px solid #ddd; padding: 4px; border-radius: 6px;">
-                <p style="font-size: 12px; margin: 5px 0; color: #222; word-break: break-all;"><strong>International UPI ID:</strong><br><span style="color: #007bff;">yellowleavesin-1@okicici</span></p>
-            </div>
+    <script>
+        function analyzeBlueprint() {
+            const width = document.getElementById('plotWidth').value;
+            const length = document.getElementById('plotLength').value;
+            const orientation = document.getElementById('roadOrientation').value;
             
-            <div style="padding-left: 5px; font-size: 11px; color: #333; line-height: 1.5;">
-                <h4 style="margin: 0 0 12px 0; color: #007bff; font-size: 15px; font-weight: 600; text-align: center;">🌐 National / International Bank</h4>
-                <p style="margin: 3px 0;"><strong>Name:</strong> Monika Sharma</p>
-                <p style="margin: 3px 0;"><strong>Bank:</strong> Canara Bank</p>
-                <p style="margin: 3px 0;"><strong>Branch:</strong> Kath Mandi, Rohtak - 124001, Haryana, India</p>
-                <p style="margin: 3px 0;"><strong>A/c:</strong> 110168182102</p>
+            document.getElementById('outputContainer').style.display = 'block';
+            
+            document.getElementById('zone1').innerHTML = `Heavy frame structural footings mapped to the South-West zones to balance load stabilization metrics across a ${width}x${length} FT boundary.`;
+            document.getElementById('zone2').innerHTML = `Kitchen vectors and localized high-heat utilities routed towards the South-East quadrant to optimize solar heat retention loops.`;
+            document.getElementById('zone3').innerHTML = `Strategic air pathways and full-height window cutouts mapped along the North-East perimeter to maximize cross-ventilation.`;
+            
+            const messagePayload = `Hello PlotSnap, I have processed my plot matrix parameters via the spatial web dashboard (${width}x${length} FT, ${orientation}-Facing). Please review my design metrics and generate the premium coordinates layout report.`;
+            
+            document.getElementById('whatsappLink').href = `https://wa.me/918901229319?text=${encodeURIComponent(messagePayload)}`;
+        }
+    </script>
+</body>
+</html>
