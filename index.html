@@ -164,5 +164,82 @@ function generateLayout() {
     ctx.restore();
 }
 </script>
+    <!-- START OF PLOTSNAP PREMIUM AUTOMATED PAYMENT & PRINT ENGINE -->
+<div id="plotsnap-premium-panel" style="max-width: 550px; margin: 40px auto; padding: 25px; border: 2px dashed #007bff; background: #ffffff; border-radius: 12px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: center;">
+    
+    <h3 style="color: #111; margin-bottom: 8px; font-size: 22px; font-weight: 700;">🔒 Unlock Premium Blueprint Report</h3>
+    <p style="color: #555; font-size: 14px; margin-bottom: 20px; line-height: 1.5;">Get your instant print-ready summary report containing exact zone boundary coordinates and optimal structural layout metrics.</p>
+    
+    <div style="font-size: 18px; font-weight: bold; color: #28a745; margin-bottom: 20px; background: #eef9f1; display: inline-block; padding: 6px 15px; border-radius: 20px;">
+        Price: ₹499 / $9 USD
+    </div>
+
+    <!-- Dual Payment Option Grid -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; text-align: left; border-top: 1px solid #eee; padding-top: 20px;">
+        
+        <!-- National Options Column (India UPI) -->
+        <div style="border-right: 1px solid #eee; padding-right: 15px; text-align: center;">
+            <h4 style="margin: 0 0 12px 0; color: #007bff; font-size: 15px; font-weight: 600;">🇮🇳 Within India (UPI)</h4>
+            <img src="qr-code.png.jpg" alt="Google Pay QR Code" style="width: 135px; height: 135px; display: block; margin: 0 auto 12px auto; border: 1px solid #ddd; padding: 4px; border-radius: 6px;">
+            <p style="font-size: 12px; margin: 5px 0; color: #222; word-break: break-all;"><strong>GPay UPI ID:</strong><br><span style="color: #007bff;">yellowleavesin-1@okicici</span></p>
+        </div>
+        
+        <!-- International Options Column (Global Payments) -->
+        <div style="padding-left: 5px; font-size: 11px; color: #333; line-height: 1.5;">
+            <h4 style="margin: 0 0 12px 0; color: #007bff; font-size: 15px; font-weight: 600; text-align: center;">🌐 Bank / International</h4>
+            <p style="margin: 3px 0;"><strong>Name:</strong> Monika Sharma</p>
+            <p style="margin: 3px 0;"><strong>Bank:</strong> Canara Bank</p>
+            <p style="margin: 3px 0;"><strong>Branch:</strong> Kath Mandi, Rohtak</p>
+            <p style="margin: 3px 0;"><strong>A/c:</strong> 110168182102</p>
+            <p style="margin: 3px 0;"><strong>IFSC:</strong> CNRB0006621</p>
+            <p style="margin: 3px 0;"><strong>SWIFT:</strong> CNRBINBBBFD</p>
+            <p style="margin: 3px 0;"><strong>MICR:</strong> 124015009</p>
+        </div>
+
+    </div>
+
+    <!-- Fully Automated WhatsApp Redirection Button -->
+    <a href="https://wa.me." 
+       target="_blank" 
+       style="display: block; width: calc(100% - 24px); text-align: center; padding: 12px; background: #25D366; color: white; font-weight: bold; text-decoration: none; border-radius: 6px; font-size: 15px; margin: 15px auto 0 auto; box-shadow: 0 2px 5px rgba(0,0,0,0.1); border: none;">
+       🟢 Send Payment Screenshot via WhatsApp
+    </a>
+
+    <!-- Client-Side Access Verification Key Box -->
+    <div style="margin-top: 25px; padding: 15px; border-radius: 8px; background: #f8f9fa; border: 1px solid #ddd; text-align: left;">
+        <label style="display: block; font-size: 13px; font-weight: 600; color: #333; margin-bottom: 6px;">🔑 Enter Unlock Key Sent via WhatsApp Automation:</label>
+        <div style="display: flex; gap: 10px;">
+            <input type="text" id="premium-secret-key" placeholder="Enter key (e.g. SNAP99)" style="flex: 1; padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; background: #fff; color: #000;">
+            <button type="button" onclick="checkPremiumKey()" style="padding: 8px 15px; background: #28a745; color: white; border: none; font-weight: bold; border-radius: 4px; cursor: pointer; font-size: 14px;">Unlock PDF</button>
+        </div>
+        <p id="unlock-message" style="font-size: 12px; margin: 5px 0 0 0; font-weight: 600; display: none;"></p>
+        
+        <!-- Hidden print button that activates dynamically when key matches -->
+        <button type="button" id="print-pdf-btn" onclick="window.print()" style="display: none; width: 100%; margin-top: 12px; padding: 12px; background: #007bff; color: white; font-weight: bold; border: none; border-radius: 4px; cursor: pointer; font-size: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+            🖨️ Download / Print Premium PDF Report
+        </button>
+    </div>
+</div>
+
+<script>
+function checkPremiumKey() {
+    const key = document.getElementById('premium-secret-key').value.trim();
+    const msg = document.getElementById('unlock-message');
+    const printBtn = document.getElementById('print-pdf-btn');
+    
+    if (key === 'SNAP99') { 
+        msg.style.color = '#155724';
+        msg.innerText = '✅ Access Granted! Use the button below to save/print your report.';
+        msg.style.display = 'block';
+        printBtn.style.display = 'block';
+    } else {
+        msg.style.color = '#721c24';
+        msg.innerText = '❌ Invalid key. Please double-check your values and send your screenshot via WhatsApp to get the correct key.';
+        msg.style.display = 'block';
+        printBtn.style.display = 'none';
+    }
+}
+</script>
+<!-- END OF PLOTSNAP PREMIUM AUTOMATED PAYMENT & PRINT ENGINE -->
 </body>
 </html>
