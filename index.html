@@ -28,6 +28,12 @@
         .btn-main:hover { background: var(--primary-hover); }
         .matrix-section { margin-top: 30px; border-top: 2px dashed #eef2f5; padding-top: 25px; }
         .matrix-title { font-size: 16px; margin-bottom: 15px; font-weight: 800; color: #0b2240; display: flex; align-items: center; gap: 6px; }
+        
+        /* Blueprint Canvas Styling */
+        .canvas-container { width: 100%; background: #0f1c2e; border-radius: 12px; padding: 15px; margin-bottom: 20px; display: flex; flex-direction: column; align-items: center; box-shadow: inset 0 2px 10px rgba(0,0,0,0.5); }
+        .canvas-caption { color: #8fa0b5; font-size: 11px; margin-top: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+        canvas { max-width: 100%; height: auto; background: #132237; border: 1px solid #1f3554; border-radius: 6px; }
+
         .zone-card { background: #fff; border: 1px solid #eef2f5; padding: 16px; border-radius: 10px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.02); }
         .zone-tag { font-size: 10px; text-transform: uppercase; letter-spacing: 0.8px; font-weight: 800; color: #95a5a6; margin-bottom: 4px; }
         .zone-header { font-size: 14px; font-weight: 700; color: #2c3e50; margin-bottom: 4px; }
@@ -78,10 +84,17 @@
 
         <button class="btn-main" onclick="analyzeBlueprint()">Analyze Spatial Blueprint</button>
 
+        <!-- Dynamic Visual & Text Framework Output Container -->
         <div id="outputContainer" style="display: none;">
             <div class="matrix-section">
                 <div class="matrix-title">📐 Generated Spatial Optimization Matrix</div>
                 
+                <!-- Live Interactive Architectural Canvas Frame -->
+                <div class="canvas-container">
+                    <canvas id="blueprintCanvas" width="360" height="280"></canvas>
+                    <div class="canvas-caption" id="canvasCaption">Spatial Matrix Map</div>
+                </div>
+
                 <div class="zone-card">
                     <div class="zone-tag">Stability Zone</div>
                     <div class="zone-header">Load-Bearing Structural Placement</div>
@@ -134,19 +147,105 @@
     </div>
 
     <script>
+        function drawVisualBlueprint(width, length, orientation) {
+            const canvas = document.getElementById('blueprintCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Clear layout grid space
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Calculate proportional map boxes
+            const maxDim = Math.max(width, length);
+            const scale = 180 / maxDim;
+            const drawW = width * scale;
+            const drawH = length * scale;
+            const startX = (canvas.width - drawW) / 2;
+            const startY = (canvas.height - drawH) / 2 - 10;
+            
+            // Draw Outer Plot Perimeter Bounds
+            ctx.strokeStyle = '#38bdf8';
+            ctx.lineWidth = 2;
+            ctx.fillStyle = '#1e293b';
+            ctx.fillRect(startX, startY, drawW, drawH);
+            ctx.strokeRect(startX, startY, drawW, drawH);
+            
+            // Render Blueprint Grid Line Matrices
+            ctx.strokeStyle = '#1e3a8a';
+            ctx.lineWidth = 0.5;
+            for(let i = startX + 20; i < startX + drawW; i += 20) {
+                ctx.beginPath(); ctx.moveTo(i, startY); ctx.lineTo(i, startY + drawH); ctx.stroke();
+            }
+            for(let j = startY + 20; j < startY + drawH; j += 20) {
+                ctx.beginPath(); ctx.moveTo(startX, j); ctx.lineTo(startX + drawW, j); ctx.stroke();
+            }
+            
+            // Highlight Primary Road Infrastructure Vectors based on Access Type
+            ctx.fillStyle = '#475569';
+            ctx.font = 'bold 10px sans-serif';
+            ctx.textAlign = 'center';
+            
+            if (orientation === 'North') {
+                ctx.fillRect(startX - 10, startY - 20, drawW + 20, 12);
+                ctx.fillStyle = '#fff'; ctx.fillText('▲ PRIMARY ROAD ACCESS (NORTH) ▲', startX + (drawW/2), startY - 11);
+            } else if (orientation === 'South') {
+                ctx.fillRect(startX - 10, startY + drawH + 8, drawW + 20, 12);
+                ctx.fillStyle = '#fff'; ctx.fillText('▼ PRIMARY ROAD ACCESS (SOUTH) ▼', startX + (drawW/2), startY + drawH + 17);
+            } else if (orientation === 'East') {
+                ctx.fillRect(startX + drawW + 8, startY - 10, 12, drawH + 20);
+                ctx.save(); ctx.translate(startX + drawW + 17, startY + (drawH/2)); ctx.rotate(Math.PI/2);
+                ctx.fillStyle = '#fff'; ctx.fillText('▶ ROAD ACCESS (EAST) ▶', 0, 0); ctx.restore();
+            } else if (orientation === 'West') {
+                ctx.fillRect(startX - 20, startY - 10, 12, drawH + 20);
+                ctx.save(); ctx.translate(startX - 11, startY + (drawH/2)); ctx.rotate(-Math.PI/2);
+                ctx.fillStyle = '#fff'; ctx.fillText('◀ ROAD ACCESS (WEST) ◀', 0, 0); ctx.restore();
+            }
+
+            // Overlay Spatial Optimization Text Regions inside the Site Boundary
+            ctx.fillStyle = 'rgba(239, 68, 68, 0.15)'; // Stability (Red)
+            ctx.fillRect(startX + 2, startY + drawH - (drawH*0.4), drawW - 4, (drawH*0.4) - 2);
+            
+            ctx.fillStyle = 'rgba(245, 158, 11, 0.15)'; // Thermal (Orange)
+            ctx.fillRect(startX + drawW - (drawW*0.4), startY + 2, (drawW*0.4) - 2, (drawH*0.5));
+            
+            ctx.fillStyle = 'rgba(16, 185, 129, 0.15)'; // Ambient (Green)
+            ctx.fillRect(startX + 2, startY + 2, (drawW*0.5), (drawH*0.4));
+
+            // Interior Plot Dimension Font Metrics
+            ctx.fillStyle = '#38bdf8';
+            ctx.font = '11px monospace';
+            ctx.textAlign = 'center';
+            ctx.fillText(`${width} FT`, startX + (drawW/2), startY + drawH - 8);
+            
+            ctx.save();
+            ctx.translate(startX + 12, startY + (drawH/2));
+            ctx.rotate(-Math.PI/2);
+            ctx.fillText(`${length} FT`, 0, 0);
+            ctx.restore();
+        }
+
         function analyzeBlueprint() {
-            const width = document.getElementById('plotWidth').value;
-            const length = document.getElementById('plotLength').value;
+            const width = parseInt(document.getElementById('plotWidth').value) || 30;
+            const length = parseInt(document.getElementById('plotLength').value) || 60;
             const orientation = document.getElementById('roadOrientation').value;
             
+            // Uncover output framework containers
             document.getElementById('outputContainer').style.display = 'block';
             
+            // Render the graphical layout canvas matrix instantly
+            drawVisualBlueprint(width, length, orientation);
+            
+            // Update textual analysis headers
+            document.getElementById('canvasCaption').innerText = `Live Layout Matrix: ${width}x${length} FT (${orientation}-Facing)`;
+            
+            // Populates spatial assessment data vectors
             document.getElementById('zone1').innerHTML = `Heavy frame structural footings mapped to the South-West zones to balance load stabilization metrics across a ${width}x${length} FT boundary.`;
             document.getElementById('zone2').innerHTML = `Kitchen vectors and localized high-heat utilities routed towards the South-East quadrant to optimize solar heat retention loops.`;
             document.getElementById('zone3').innerHTML = `Strategic air pathways and full-height window cutouts mapped along the North-East perimeter to maximize cross-ventilation.`;
             
+            // Build the clean WhatsApp payload
             const messagePayload = `Hello PlotSnap, I have processed my plot matrix parameters via the spatial web dashboard (${width}x${length} FT, ${orientation}-Facing). Please review my design metrics and generate the premium coordinates layout report.`;
             
+            // Bind complete link path to the anchor element
             document.getElementById('whatsappLink').href = `https://wa.me/918901229319?text=${encodeURIComponent(messagePayload)}`;
         }
     </script>
