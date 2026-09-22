@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PlotSnap - Instant Spatial Analyzer</title>
+    <style>
+        :root {
+            --primary: #0b2240;
+            --primary-hover: #17345c;
+            --bg: #f4f7f6;
+            --card-bg: #ffffff;
+            --text: #333333;
+            --accent: #e4a834;
+            --brand-blue: #0550c6;
+            --border: #eef2f5;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        body { background-color: var(--bg); color: var(--text); padding: 20px; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; }
+        .container { width: 100%; max-width: 800px; background: var(--card-bg); padding: 30px; border-radius: 16px; box-shadow: 0 4px 30px rgba(0,0,0,0.05); border: 1px solid var(--border); margin-top: 20px; }
+        h1 { font-size: 28px; text-align: center; color: var(--primary); font-weight: 800; letter-spacing: -0.5px; margin-bottom: 4px; }
+        h1 span { color: var(--brand-blue); }
+        .subtitle { font-size: 13px; text-align: center; color: #777; margin-bottom: 25px; }
+        
+        .grid-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px; }
+        @media (max-width: 600px) { .grid-layout { grid-template-columns: 1fr; } }
+        
+        .control-panel { display: flex; flex-direction: column; gap: 15px; }
+        .input-group { display: flex; flex-direction: column; gap: 5px; }
+        label { font-size: 14px; font-weight: 600; color: var(--primary); }
+        input, select { padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 14px; width: 100%; }
+        
+        .results-panel { background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid var(--border); display: flex; flex-direction: column; gap: 10px; }
+        .result-item { display: flex; justify-content: space-between; font-size: 15px; padding-bottom: 8px; border-bottom: 1px dashed #e2e8f0; }
+        .result-item:last-child { border-bottom: none; }
+        .result-val { font-weight: 700; color: var(--brand-blue); }
+        
+        .visualizer-container { grid-column: 1 / -1; display: flex; flex-direction: column; items-center: center; gap: 10px; margin-top: 10px; }
+        .canvas-wrapper { width: 100%; max-width: 500px; margin: 0 auto; background: #fff; border: 2px dashed #cbd5e1; border-radius: 12px; position: relative; aspect-ratio: 4/3; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        canvas { width: 100%; height: 100%; display: block; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Plot<span>Snap</span></h1>
+        <div class="subtitle">Instant Pre-Blueprint Spatial Analyzer</div>
+        
+        <div class="grid-layout">
+            <div class="control-panel">
+                <div class="input-group">
+                    <label for="plotWidth">Plot Width (ft)</label>
+                    <input type="number" id="plotWidth" value="40" min="5" max="500">
+                </div>
+                <div class="input-group">
+                    <label for="plotLength">Plot Length (ft)</label>
+                    <input type="number" id="plotLength" value="60" min="5" max="500">
+                </div>
+                <div class="input-group">
+                    <label for="frontSetback">Front Setback (ft)</label>
+                    <input type="number" id="frontSetback" value="10" min="0" max="100">
+                </div>
+                <div class="input-group">
+                    <label for="rearSetback">Rear / Side Setbacks (ft)</label>
+                    <input type="number" id="sideSetback" value="5" min="0" max="100">
+                </div>
+            </div>
+            
+            <div class="results-panel">
+                <h3>Spatial Metrics</h3>
+                <div class="result-item">
+                    <span>Total Plot Area:</span>
+                    <span class="result-val" id="totalArea">2,400 sq ft</span>
+                </div>
+                <div class="result-item">
+                    <span>Build Options Max Width:</span>
+                    <span class="result-val" id="buildWidth">30 ft</span>
+                </div>
+                <div class="result-item">
+                    <span>Build Options Max Length:</span>
+                    <span class="result-val" id="buildLength">45 ft</span>
+                </div>
+                <div class="result-item">
+                    <span>Max Printable Footprint:</span>
+                    <span class="result-val" id="buildArea">1,350 sq ft</span>
+                </div>
+                <div class="result-item">
+                    <span>Coverage Ratio:</span>
+                    <span class="result-val" id="coverageRatio">56.25%</span>
+                </div>
+            </div>
+            
+            <div class="visualizer-container">
+                <label>Dynamic Spatial Preview</label>
+                <div class="canvas-wrapper">
+                    <canvas id="spatialCanvas"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const plotWidthInput = document.getElementById('plotWidth');
+        const plotLengthInput = document.getElementById('plotLength');
+        const frontSetbackInput = document.getElementById('frontSetback');
+        const sideSetbackInput = document.getElementById('sideSetback');
+
+        const totalAreaEl = document.getElementById('totalArea');
+        const buildWidthEl = document.getElementById('buildWidth');
+        const buildLengthEl = document.getElementById('buildLength');
+        const buildAreaEl = document.getElementById('buildArea');
+        const coverageRatioEl = document.getElementById('coverageRatio');
+        const canvas = document.getElementById('spatialCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            const rect = canvas.parentElement.getBoundingClientRect();
+            canvas.width = rect.width * window.devicePixelRatio;
+            canvas.height = rect.width * 0.75 * window.devicePixelRatio;
+            canvas.style.width = rect.width + 'px';
+            canvas.style.height = (rect.width * 0.75) + 'px';
+            ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+            updateAnalysis();
+        }
+
+        function updateAnalysis() {
+            const w = parseFloat(plotWidthInput.value) || 0;
+            const l = parseFloat(plotLengthInput.value) || 0;
+            const front = parseFloat(frontSetbackInput.value) || 0;
+            const side = parseFloat(sideSetbackInput.value) || 0;
+
+            const totalArea = w * l;
+            const bWidth = Math.max(0, w - (side * 2));
+            const bLength = Math.max(0, l - front - side);
+            const buildArea = bWidth * bLength;
+            const ratio = totalArea > 0 ? ((buildArea / totalArea) * 100).toFixed(2) : 0;
+
+            totalAreaEl.textContent = totalArea.toLocaleString() + ' sq ft';
+            buildWidthEl.textContent = bWidth + ' ft';
+            buildLengthEl.textContent = bLength + ' ft';
+            buildAreaEl.textContent = buildArea.toLocaleString() + ' sq ft';
+            coverageRatioEl.textContent = ratio + '%';
+
+            drawPreview(w, l, front, side, bWidth, bLength);
+        }
+
+        function drawPreview(w, l, front, side, bWidth, bLength) {
+            const cw = canvas.width / window.devicePixelRatio;
+            const ch = canvas.height / window.devicePixelRatio;
+            ctx.clearRect(0, 0, cw, ch);
+
+            if (w <= 0 || l <= 0) return;
+
+            const padding = 30;
+            const maxW = cw - (padding * 2);
+            const maxH = ch - (padding * 2);
+
+            const scale = Math.min(maxW / w, maxH / l);
+
+            const renderW = w * scale;
+            const renderL = l * scale;
+            const x = (cw - renderW) / 2;
+            const y = (ch - renderL) / 2;
+
+            // Draw Plot Boundary
+            ctx.strokeStyle = '#0b2240';
+            ctx.lineWidth = 2;
+            ctx.fillStyle = '#f8fafc';
+            ctx.fillRect(x, y, renderW, renderL);
+            ctx.strokeRect(x, y, renderW, renderL);
+
+            // Draw Build Zone
+            if (bWidth > 0 && bLength > 0) {
+                const rx = x + (side * scale);
+                const ry = y + (side * scale); 
+                const rw = bWidth * scale;
+                const rh = bLength * scale;
+
+                ctx.fillStyle = 'rgba(5, 80, 198, 0.15)';
+                ctx.strokeStyle = '#0550c6';
+                ctx.lineWidth = 1.5;
+                ctx.setLineDash([4, 4]);
+                ctx.fillRect(rx, ry, rw, rh);
+                ctx.strokeRect(rx, ry, rw, rh);
+                ctx.setLineDash([]);
+                
+                ctx.fillStyle = '#0550c6';
+                ctx.font = '11px sans-serif';
+                ctx.fillText('Buildable Zone', rx + 8, ry + 18);
+            }
+            
+            ctx.fillStyle = '#64748b';
+            ctx.font = '10px sans-serif';
+            ctx.fillText(`${w} ft`, x + renderW/2 - 10, y - 8);
+            
+            ctx.save();
+            ctx.translate(x - 8, y + renderL/2);
+            ctx.rotate(-Math.PI/2);
+            ctx.fillText(`${l} ft`, -10, 0);
+            ctx.restore();
+        }
+
+        [plotWidthInput, plotLengthInput, frontSetbackInput, sideSetbackInput].forEach(input => {
+            input.addEventListener('input', updateAnalysis);
+        });
+
+        window.addEventListener('resize', resizeCanvas);
+        setTimeout(resizeCanvas, 100);
+    </script>
+</body>
+</html>
