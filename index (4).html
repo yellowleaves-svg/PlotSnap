@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PlotSnap - Instant Spatial Analyzer</title>
+    <style>
+        :root {
+            --primary: #0b2240;
+            --primary-hover: #17345c;
+            --bg: #f4f7f6;
+            --card-bg: #ffffff;
+            --text: #333333;
+            --accent: #e4a834;
+            --brand-blue: #0550c6;
+            --border: #eef2f5;
+            --stability: #e3effd;
+            --thermal: #fdf2e9;
+            --ambient: #eafaf1;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        body { background-color: var(--bg); color: var(--text); padding: 16px; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; }
+        .container { width: 100%; max-width: 600px; background: var(--card-bg); padding: 24px; border-radius: 16px; box-shadow: 0 4px 30px rgba(0,0,0,0.05); border: 1px solid var(--border); margin-bottom: 40px; }
+        h1 { font-size: 28px; text-align: center; color: var(--primary); font-weight: 800; letter-spacing: -0.5px; margin-bottom: 4px; }
+        h1 span { color: var(--brand-blue); }
+        .subtitle { font-size: 13px; text-align: center; color: #777; margin-bottom: 25px; }
+        
+        .section-title { font-size: 16px; font-weight: 700; color: var(--primary); margin: 20px 0 12px 0; border-bottom: 2px solid var(--border); padding-bottom: 6px; }
+        
+        .input-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+        .input-group { display: flex; flex-direction: column; }
+        label { font-size: 12px; font-weight: 600; color: #555; margin-bottom: 4px; }
+        input, select { padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 14px; width: 100%; outline: none; transition: border 0.2s; }
+        input:focus, select:focus { border-color: var(--brand-blue); }
+        
+        .orientation-options { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
+        .orient-btn { padding: 10px; border: 1px solid #ccc; border-radius: 8px; background: #fff; font-size: 13px; font-weight: 600; cursor: pointer; text-align: center; transition: all 0.2s; }
+        .orient-btn.active { background: var(--brand-blue); color: #fff; border-color: var(--brand-blue); }
+        
+        .btn-primary { display: block; width: 100%; padding: 14px; background: var(--brand-blue); color: #fff; border: none; border-radius: 8px; font-size: 15px; font-weight: 700; cursor: pointer; text-align: center; text-decoration: none; margin-top: 15px; transition: background 0.2s; }
+        .btn-primary:hover { background: #0443a5; }
+        
+        /* Expanded Visual Canvas Mapping */
+        .canvas-container { width: 100%; background: #fafafa; border: 1px dashed #ccc; border-radius: 8px; padding: 12px; margin-top: 15px; text-align: center; }
+        canvas { max-width: 100%; height: auto; display: block; margin: 0 auto; background: #fff; border: 1px solid #e0e0e0; }
+        
+        /* Premium Layout Grid Elements */
+        .premium-box { background: #fffdf7; border: 2px solid var(--accent); border-radius: 12px; padding: 20px; margin-top: 25px; position: relative; }
+        .premium-badge { position: absolute; top: -12px; left: 20px; background: var(--accent); color: #fff; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 4px; text-transform: uppercase; }
+        .price-tag { font-size: 20px; font-weight: 800; color: var(--primary); margin: 8px 0; }
+        .bank-details { background: #fff; border: 1px solid var(--border); padding: 12px; border-radius: 8px; font-size: 13px; line-height: 1.6; margin-top: 10px; }
+        .bank-details strong { color: var(--primary); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Plot<span>Snap</span></h1>
+        <div class="subtitle">Instant Pre-Blueprint Spatial Analyzer</div>
+        
+        <p style="font-size: 13px; color: #555; margin-bottom: 15px; line-height: 1.5;">
+            💡 <strong>Spatial Data Utility:</strong> This software calculates micro-environmental orientation maps for rectangular configurations to maximize layouts before formal architecture mapping begins.
+        </p>
+
+        <!-- Dynamic Form Fields -->
+        <div class="input-grid">
+            <div class="input-group">
+                <label>Plot Width (FT)</label>
+                <input type="number" id="plotWidth" value="30" oninput="calculateMatrix()">
+            </div>
+            <div class="input-group">
+                <label>Plot Length (FT)</label>
+                <input type="number" id="plotLength" value="60" oninput="calculateMatrix()">
+            </div>
+        </div>
+
+        <label>Primary Road Access Orientation</label>
+        <div class="orientation-options">
+            <div class="orient-btn active" onclick="setOrientation('North', this)">North Facing</div>
+            <div class="orient-btn" onclick="setOrientation('East', this)">East Facing</div>
+            <div class="orient-btn" onclick="setOrientation('South', this)">South Facing</div>
+            <div class="orient-btn" onclick="setOrientation('West', this)">West Facing</div>
+        </div>
+
+        <button class="btn-primary" onclick="calculateMatrix()">Analyze Spatial Blueprint</button>
+
+        <!-- Expanded Matrix Mapping Grid Box -->
+        <div class="section-title">📐 Generated Spatial Optimization Matrix</div>
+        <div class="canvas-container">
+            <canvas id="matrixCanvas" width="500" height="400"></canvas>
+        </div>
+
+        <!-- Premium Credentials Secure Gate Block -->
+        <div class="premium-box">
+            <div class="premium-badge">🔒 Unlock Premium Blueprint Report</div>
+            <p style="font-size: 13px; color: #444; line-height: 1.4;">
+                Get your instant print-ready summary report containing exact zone boundary coordinates and optimal structural layout metrics.
+            </p>
+            <div class="price-tag">Price: ₹499 / $9 USD</div>
+            
+            <div class="bank-details">
+                <strong>International / Domestic UPI ID:</strong><br>
+                <span style="font-family: monospace; font-weight: 700; color: var(--brand-blue);">yellowleavesin-1@okicici</span><br><br>
+                <strong>Direct Bank Transfer:</strong><br>
+                Name: <strong>Monika Sharma</strong><br>
+                Bank: <strong>Canara Bank</strong><br>
+                Branch: <strong>Rohtak</strong><br>
+                Account No: <strong>110168182102</strong><br>
+                IFSC Code: <strong>CNRB0000412</strong><br>
+                SWIFT Code: <strong>CNRBINBBRHK</strong><br>
+                MICR Code: <strong>124015002</strong>
+            </div>
+
+            <a id="whatsappLink" href="https://wa.me/918901229319?text=I%20have%20completed%20the%20payment%20for%20the%20PlotSnap%20Premium%20Blueprint%20Report.%20Please%20verify." target="_blank" class="btn-primary" style="background: #25D366; border-color: #25D366; margin-top: 12px;">
+                Confirm Payment Details on WhatsApp
+            </a>
+        </div>
+    </div>
+
+    <script>
+        let currentOrientation = 'North';
+
+        function setOrientation(direction, element) {
+            document.querySelectorAll('.orient-btn').forEach(btn => btn.classList.remove('active'));
+            element.classList.add('active');
+            currentOrientation = direction;
+            calculateMatrix();
+        }
+
+        function calculateMatrix() {
+            const width = parseFloat(document.getElementById('plotWidth').value) || 0;
+            const length = parseFloat(document.getElementById('plotLength').value) || 0;
+            const canvas = document.getElementById('matrixCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Clear prior plots
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Layout scale configuration
+            const padding = 40;
+            const maxW = canvas.width - (padding * 2);
+            const maxH = canvas.height - (padding * 2);
+            
+            let scale = Math.min(maxW / width, maxH / length);
+            if(scale === Infinity || isNaN(scale) || scale <= 0) scale = 5;
+            
+            const renderW = width * scale;
+            const renderH = length * scale;
+            const startX = (canvas.width - renderW) / 2;
+            const startY = (canvas.height - renderH) / 2;
+
+            // Render Site Perimeter Framework
+            ctx.strokeStyle = '#0b2240';
+            ctx.lineWidth = 3;
+            ctx.strokeRect(startX, startY, renderW, renderH);
+
+            // Calculate Grid Boundaries
+            ctx.fillStyle = '#e3effd'; // Stability Block
+            ctx.fillRect(startX + 4, startY + 4, renderW - 8, renderH * 0.4);
+            
+            ctx.fillStyle = '#fdf2e9'; // Thermal Zone
+            ctx.fillRect(startX + 4, startY + (renderH * 0.4), renderW - 8, renderH * 0.35);
+            
+            ctx.fillStyle = '#eafaf1'; // Ambient Ventilation Vector
+            ctx.fillRect(startX + 4, startY + (renderH * 0.75), renderW - 8, renderH * 0.25 - 4);
+
+            // Vector Core Matrix Text Indicators
+            ctx.fillStyle = '#0b2240';
+            ctx.font = 'bold 11px sans-serif';
+            ctx.textAlign = 'center';
+            
+            ctx.fillText('Stability Core Zone', startX + (renderW/2), startY + (renderH * 0.2));
+            ctx.fillText('Thermal Vector Zone', startX + (renderW/2), startY + (renderH * 0.55));
+            ctx.fillText('Ambient Light Edge', startX + (renderW/2), startY + (renderH * 0.85));
+
+            // Compass Indicator Directional Flag Overlay
+            ctx.fillStyle = '#e4a834';
+            ctx.beginPath();
+            ctx.arc(startX + 25, startY + 25, 15, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.fillStyle = '#fff';
+            ctx.font = 'bold 10px sans-serif';
+            ctx.fillText(currentOrientation, startX + 25, startY + 29);
+
+            // Dynamic WhatsApp message string injection
+            const waLink = document.getElementById('whatsappLink');
+            const customMessage = `Hello, I want to unlock the Premium Blueprint Report for a \${width}ft x \${length}ft plot facing \${currentOrientation}. I have reviewed the payment methods.`;
+            waLink.href = `https://wa.me/918901229319?text=\${encodeURIComponent(customMessage)}`;
+        }
+
+        // Initialize spatial maps instantly upon boot
+        window.onload = function() {
+            calculateMatrix();
+        };
+    </script>
+</body>
+</html>
